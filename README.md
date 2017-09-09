@@ -25,7 +25,7 @@ Available build arguments:
 Available environment variables:
 
 - `DJANGO_PORT`: port used to serve your django application.
-- `REQUIREMENTS_FILE`: requirements.txt file path, to be used by pip 
+- `REQUIREMENTS_FILE`: requirements.txt file path, to be used by pip
 
 
 ## Quickstart
@@ -39,19 +39,19 @@ Available environment variables:
 
 ## Attention!
 
-In order to avoid running this container using **root** as user, you will need 
+In order to avoid running this container using **root** as user, you will need
 to mount a volume, binding your sources directory to `$DJANGO_HOME/$DJANGO_PRJ_DIR`.
 
-That's what's `--mount type=bind,source=$(pwd),target=/opt/django/app` for.
+That's what `--mount type=bind,source=$(pwd),target=/opt/django/app` is for.
 
 
-- Why not just using `ADD`? 
+- Why not just using `ADD`?
 
-`ADD . /opt/django/app`, because it will still use **root** to include your 
-sources on the docker container.
+Because it will still use **root** to include your sources on the docker container.
 
 
 - But you could use `ADD` and after `RUN` to update the owner and permissions?
+
 Yes, but this will duplicate the layers used, thus increasing the size of your
 image 2x the size of your source.
 
@@ -62,14 +62,14 @@ https://github.com/moby/moby/issues/6119
 
 ## How to use build arguments
 
-If you want to change default username, default home directory or the project 
+If you want to change default username, default home directory or the project
 directory, just build your image like this:
 
 `docker build --build-arg DJANGO_USER=jonsnow --build-arg DJANGO_HOME=/thenorth --build-arg DJANGO_PRJ_DIR=winterfell -t django:got .`
 
-This will generate a docker image that will run with **jonsnow** as owner, 
-**/thenorth** as **jonsnow**'s home and **/thenorth/winterfell** as your django 
-project directory. 
+This will generate a docker image that will run with **jonsnow** as owner,
+**/thenorth** as **jonsnow**'s home and **/thenorth/winterfell** as your django
+project directory.
 
 
 ## How to use environment variables
@@ -78,4 +78,3 @@ Let's continue with our little example, you can change the default port and/or
 the requirements.txt file at runtime:
 
 `docker run -it --name game_of_django --mount type=bind,source=$(pwd)/sources/winterfell,target=/thenorth/winterfell -e DJANGO_PORT=4000 -p 4000:4000 django:got`
-
